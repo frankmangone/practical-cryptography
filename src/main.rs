@@ -1,20 +1,10 @@
-mod modulo;
+mod algorithms;
 mod curve;
+mod hashing;
+mod modulo;
 
-use modulo::{modulo, inverse};
-// use curve::{add, double, g};
+use hashing::hash;
 
 fn main() {
-    println!("hola");
-    // println!("{}", modulo(-90, 8));
-    
-    // println!("{}", inverse(1, 7));
-    // println!("{}", inverse(2, 7));
-    // println!("{}", inverse(3, 7));
-    // println!("{}", inverse(4, 7));
-
-    // println!("{:?}", g);
-    // println!("{:?}", add(g, double(g)));
-    // println!("{:?}", add(g, add(g, double(g))));
-    // println!("{:?}", double(double(g)));
+    println!("{}", hash("hola!", 7691i128));
 }
