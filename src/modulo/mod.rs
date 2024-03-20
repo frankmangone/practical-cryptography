@@ -6,12 +6,10 @@ pub fn modulo(num: i128, modulo: i128) -> i128 {
   let value: i128;
   
   if num >= 0 {
-    value = num % modulo
+    num % modulo
   } else {
-    value = modulo + (num % modulo)
+    modulo + (num % modulo)
   }
-
-  value
 }
 
 // Calculates (n^x) % p

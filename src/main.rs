@@ -24,7 +24,7 @@ fn main() {
     );
     let (sk, pk) = curve.keypair();
 
-    let message = "Some message to sign";
+    let message = "Hola mama!";
     let sig = sign(message, curve.clone(), sk);
 
     let result = verify(message, sig.clone(), curve.clone(), pk.clone());
@@ -37,12 +37,11 @@ fn main() {
     let result = verify(message, forged_sig.clone(), curve.clone(), pk.clone());
     println!("Is forged signature valid? {}", result);
 
-
     //
     //
     // ECIES encryption scheme
-    let (key, masked) = encrypt(b"Hola mundo!", curve.clone(), pk);
+    // let (key, masked) = encrypt(b"Hola mundo!", curve.clone(), pk);
     
-    dbg!(key);
-    dbg!(masked);
+    // dbg!(key);
+    // dbg!(masked);
 }
