@@ -10,7 +10,6 @@ pub struct Signature {
 }
 
 pub fn sign(message: &str, curve: Curve, sk: i128) -> Signature {
-  // We should really be using Euler's Totient Function, but whatever...
   let ord = curve.order;
 
   // Select random nonce

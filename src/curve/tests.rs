@@ -67,5 +67,6 @@ fn multiplication_by_group_order() {
   let gen = &curve.gen;
   let order = curve.order;
 
+  assert_eq!(Point::Identity, curve.multiply(gen, order));
   assert_eq!(*gen, curve.multiply(gen, order + 1));
 }
