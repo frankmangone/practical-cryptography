@@ -34,24 +34,32 @@ fn add_points(p_: (i128, i128), q_: (i128, i128)) -> Point {
   let (x_p, y_p) = p_;
   let (x_q, y_q) = q_;
   
+  // Ensure we are not adding inverse points
+  if x_p == x_q && y_p != y_q {
+    return Point::Identity;
+  }
+  
   let slope = modulo((y_p - y_q) * inverse(x_p - x_q, q), q);
-	let ord = modulo((y_q * x_p - y_p * x_q) * inverse(x_p - x_q, q), q);
+  
+  let x_r = modulo(slope * slope - x_p - x_q, q);
+  let y_r = modulo(slope * (x_p - x_r) - y_p, q);
 
-	let x_r = modulo(x_p + x_q - slope * slope, q);
-	let y_r = modulo(0 - slope * x_r - ord, q);
-
-	Point::Coords(x_r, y_r)
+  Point::Coords(x_r, y_r)
 }
 
 pub fn double(p_: Point) -> Point {
   match p_ {
     Point::Identity => Point::Identity,
     Point::Coords(x_p, y_p) => {
-      let slope = modulo((3 * x_p + a) * inverse(2 * y_p, q), q);
-      let ord = modulo(y_p - slope * x_p, q);
+      // Check if the slope would be infinite (y_p == 0)
+      if y_p == 0 {
+        return Point::Identity;
+      }
+
+      let slope = modulo((3 * x_p * x_p + a) * inverse(2 * y_p, q), q);
 
       let x_r = modulo(slope * slope - 2 * x_p, q);
-      let y_r = modulo(0 - slope * x_r - ord, q);
+      let y_r = modulo(slope * (x_p - x_r) - y_p, q);
 
       Point::Coords(x_r, y_r)
     }

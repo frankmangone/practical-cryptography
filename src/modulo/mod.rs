@@ -51,6 +51,8 @@ fn gcd(mut a: i128, mut b: i128) -> i128 {
 }
 
 pub fn inverse(n: i128, p: i128) -> i128 {
+  let n = modulo(n, p);
+  
   // Returns 0 if no Modular Multiplicative Inverse exist
   if p <= 1 || gcd(n, p) > 1 {
     return 0;

@@ -32,4 +32,12 @@ fn inverse_works_for_prime_modulo() {
   assert_eq!(inverse(129783182, 98764321), 16580311i128);
 }
 
+#[test]
+fn inverse_for_negatives_works() {
+  assert_eq!(inverse(-3, 2), inverse(1, 2));
+  assert_eq!(inverse(-9, 5), inverse(1, 5));
+  assert_eq!(inverse(-19, 7), inverse(2, 7));
+
+}
+
 // TODO: Check for non-prime modulo.
