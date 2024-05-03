@@ -22,7 +22,8 @@ fn main() {
     );
 
     // Algorithms to run
-    // ecdsa(curve);
+    println!(".\n.\n.\n.\n.\n.\n.\n.");
+    ecdsa(&curve);
     ecies(&curve);
 }
 
@@ -30,11 +31,18 @@ fn main() {
 //
 // ECDSA Signature scheme
 fn ecdsa(curve: &Curve) {
+    println!("ECDSA algorithm");
+    println!("================================================");
+    println!("================================================");
+
     let (sk, pk) = curve.keypair();
 
     let message = "Hola mama!";
+    println!("Message to sign: {}", message);
+
     let sig = sign(message, curve.clone(), sk);
-    
+    println!("Calculated signature: {:?}", sig.clone());
+
     let result = verify(message, sig.clone(), curve.clone(), pk.clone());
     println!("Is signature valid? {}", result);
 
@@ -42,14 +50,21 @@ fn ecdsa(curve: &Curve) {
         challenge: sig.challenge,
         verifier: 6192i128,
     };
+    println!("Forged (simulated verifier) signature: {:?}", forged_sig.clone());
     let result = verify(message, forged_sig.clone(), curve.clone(), pk.clone());
     println!("Is forged signature valid? {}", result);
+
+    println!(".\n.\n.\n.\n.\n.\n.\n.");
 }
 
 //
 //
 // ECIES encryption scheme
 fn ecies(curve: &Curve) {
+    println!("ECIES algorithm");
+    println!("================================================");
+    println!("================================================");
+
     let message = "Hola mundo!";
     let message_bytes = message.as_bytes();
 
@@ -65,4 +80,6 @@ fn ecies(curve: &Curve) {
 
     println!("Decrypted bytes are: {:?}", decrypted);
     println!("Decrypted message is: {:?}", String::from_utf8(decrypted.to_vec()).unwrap());
+
+    println!(".\n.\n.\n.\n.\n.\n.\n.");
 }
