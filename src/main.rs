@@ -7,6 +7,7 @@ use curve::{Point, Curve};
 use algorithms::{
     ecdsa::{Signature, sign, verify},
     ecies::{encrypt, decrypt},
+    ecdh as ECDH,
 };
 
 fn main() {
@@ -23,13 +24,49 @@ fn main() {
 
     // Algorithms to run
     println!(".\n.\n.\n.\n.\n.\n.\n.");
+    ecdh(&curve);
     ecdsa(&curve);
     ecies(&curve);
 }
 
 //
 //
-// ECDSA Signature scheme
+// ECDH (Elliptic Curve Diffie-Hellman) key exchange
+fn ecdh(curve: &Curve) {
+    println!("ECDH algorithm");
+    println!("================================================");
+    println!("================================================");
+
+    let a = ECDH::gen_secret(curve);
+    let b = ECDH::gen_secret(curve);
+
+    println!("Alice's secret is: {}", a);
+    println!("Bob's secret is: {}", b);
+
+    let share_a = ECDH::partial_key(curve, a);
+    let share_b = ECDH::partial_key(curve, b);
+
+    println!("Alice calculates share and sends to Bob: {:?}", share_a);
+    println!("Bob calculates share and sends to Alice: {:?}", share_b);
+
+    let secret_a = ECDH::shared_secret(curve, &share_b, a);
+    let secret_b = ECDH::shared_secret(curve, &share_a, b);
+
+    println!("Alice calculates secret with Bob's share: {:?}", secret_a);
+    println!("Bob calculates secret with Alice's share: {:?}", secret_b);
+
+    if secret_a == secret_b {
+        println!("The secrets match; key exchange successful.");
+    } else {
+        println!("The secrets don't match; key exchange failed.");
+    }
+
+    println!(".\n.\n.\n.\n.\n.\n.\n.");
+}
+
+//
+//
+// ECDSA (Elliptic Curve Digital Signature Algorithm) scheme
 fn ecdsa(curve: &Curve) {
     println!("ECDSA algorithm");
     println!("================================================");
@@ -59,7 +96,7 @@ fn ecdsa(curve: &Curve) {
 
 //
 //
-// ECIES encryption scheme
+// ECIES (Elliptic Curve Integrated Encryption Scheme)
 fn ecies(curve: &Curve) {
     println!("ECIES algorithm");
     println!("================================================");
