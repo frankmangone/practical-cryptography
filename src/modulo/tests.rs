@@ -1,5 +1,3 @@
-use crate::modulo::{modulo, inverse};
-
 #[test]
 fn modulo_inside_boundary() {
   assert_eq!(modulo(0, 2), 0i128);

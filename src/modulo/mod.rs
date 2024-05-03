@@ -3,8 +3,6 @@ mod tests;
 //
 /// Modulo operation, including negatives
 pub fn modulo(num: i128, modulo: i128) -> i128 {
-  let value: i128;
-  
   if num >= 0 {
     num % modulo
   } else {

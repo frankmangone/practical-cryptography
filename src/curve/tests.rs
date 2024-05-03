@@ -1,4 +1,4 @@
-use crate::curve::{negative, Curve, Point};
+use crate::curve::{Curve, Point};
 
 fn test_curve() -> Curve {
   let gen = Point::Coords(2693i128, 4312i128);
