@@ -1,41 +1,59 @@
+use crate::modulo::modulo;
+
+use num_bigint::BigInt;
+
 #[test]
-fn modulo_inside_boundary() {
-  assert_eq!(modulo(0, 2), 0i128);
-  assert_eq!(modulo(10, 20), 10i128);
-  assert_eq!(modulo(9, 1200), 9i128);
+fn zero() {
+    let modulus = BigInt::from(7);
+    assert_eq!(modulo(&BigInt::from(0), &modulus), BigInt::from(0));
 }
 
 #[test]
-fn modulo_higher_than_boundary() {
-  assert_eq!(modulo(9, 2), 1i128);
-  assert_eq!(modulo(13, 10), 3i128);
-  assert_eq!(modulo(126, 11), 5i128);
+fn value_lower_than_modulus() {
+    let modulus = BigInt::from(7);
+    assert_eq!(modulo(&BigInt::from(4), &modulus), BigInt::from(4));
 }
 
 #[test]
-fn modulo_negatives() {
-  assert_eq!(modulo(-3, 2), 1i128);
-  assert_eq!(modulo(-9, 5), 1i128);
-  assert_eq!(modulo(-19, 7), 2i128);
-}
-
-//
-
-#[test]
-fn inverse_works_for_prime_modulo() {
-  assert_eq!(inverse(9, 7), 4i128);
-  assert_eq!(inverse(2, 5), 3i128);
-  assert_eq!(inverse(128, 11), 8i128);
-  assert_eq!(inverse(128378, 8713), 1617i128);
-  assert_eq!(inverse(129783182, 98764321), 16580311i128);
+fn value_greater_than_modulus() {
+    let modulus = BigInt::from(7);
+    assert_eq!(modulo(&BigInt::from(13), &modulus), BigInt::from(6));
 }
 
 #[test]
-fn inverse_for_negatives_works() {
-  assert_eq!(inverse(-3, 2), inverse(1, 2));
-  assert_eq!(inverse(-9, 5), inverse(1, 5));
-  assert_eq!(inverse(-19, 7), inverse(2, 7));
-
+fn negative_value() {
+    let modulus = BigInt::from(7);
+    assert_eq!(modulo(&BigInt::from(-5), &modulus), BigInt::from(2));
+    assert_eq!(modulo(&BigInt::from(-18), &modulus), BigInt::from(3));
 }
 
-// TODO: Check for non-prime modulo.
+#[test]
+fn large_numbers() {
+    let modulus = BigInt::parse_bytes(b"340282366920938463463374607431768211455", 10).unwrap();
+    let num = BigInt::parse_bytes(b"680564733841876926926749214863536422910", 10).unwrap();
+    let expected = num.clone() % &modulus;
+    assert_eq!(modulo(&num, &modulus), expected);
+}
+
+#[test]
+fn negative_large_numbers() {
+    let modulus = BigInt::parse_bytes(b"340282366920938463463374607431768211455", 10).unwrap();
+    let num = BigInt::parse_bytes(b"-680564733841876926926749214863536422910", 10).unwrap();
+    let mut expected = num.clone() % &modulus;
+    if expected < BigInt::from(0) {
+        expected += &modulus;
+    }
+    assert_eq!(modulo(&num, &modulus), expected);
+}
+
+#[test]
+#[should_panic(expected = "Modulus must be a positive number")]
+fn zero_modulus() {
+    let _ = modulo(&BigInt::from(5), &BigInt::from(0));
+}
+
+#[test]
+#[should_panic(expected = "Modulus must be a positive number")]
+fn negative_modulus() {
+    let _ = modulo(&BigInt::from(5), &BigInt::from(-7));
+}
