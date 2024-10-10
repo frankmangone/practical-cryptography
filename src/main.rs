@@ -1,5 +1,5 @@
 mod modulo;
-// mod gcd;
+mod gcd;
 
 fn main() {
     let a: i8 = -10i8;
